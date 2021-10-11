@@ -14,11 +14,12 @@ def sum(x):
     for el in x:
         s += el
     return s
+sum_of_sq_for_x = sum( [sq(x[0]), sq(x[1]), sq(x[2]), sq(x[3])] )
 def sq(n):
     return n**2
 
 def find_delta(x,y):
-    sum_of_sq_for_x = sum( [sq(x[0]), sq(x[1]), sq(x[2]), sq(x[3])] )
+    sum_of_sq_for_x
     delta=N*sum_of_sq_for_x - sq(sum(x))
     return delta
 
@@ -35,12 +36,24 @@ def find_variance(x,y):
     return v
 
 def find_sm(x,y):
-    sm=(N*( sq(variance) / delta ))**0.5
+    sm=(N*( variance / delta ))**0.5
     return sm
 
 def find_sb(x,y):
     sb=( variance * sum_of_sq_for_x / delta )**0.5
     return sb
+
+def find_chi(x,y,m,b):
+    y_expected=[]
+    for el in x:
+        expected=m*el+b
+        y_expected.append(expected)
+    chi=0
+    for i in range(4):
+        ele=sq(y[i]-y_expected[i]) / y_expected[i]
+        chi+=ele
+
+    return chi
 
 print("op1")
 delta=find_delta(x,y) # N*sum of sq - sq of sum
@@ -52,7 +65,7 @@ print("m:",m)
 b=find_b(x,y)
 print("b:",b)
 
-variance=find_variance(x,y)
+v=find_variance(x,y)
 print("variance:",v)
 
 sm=find_sm(x,y)
@@ -60,6 +73,8 @@ print("sm:", sm)
 
 sb=find_sb(x,y)
 print("sb:", sb)
+
+print("chi:",find_chi(x,y,m,b))
 
 x=[0.013946,
 0.002414,
@@ -72,6 +87,14 @@ y=[6.476,
 6.501,
 6.501
 ]
+
+z = [464.5,
+2691.0,
+27090.1,
+98950.0
+]
+def find_Rv(I_a,V_v,R_l):
+    return (I_a/V_v-1/R_l)**(-1)
 N=4
 print("\nop2")
 delta=find_delta(x,y) # N*sum of sq - sq of sum
@@ -91,4 +114,11 @@ print("sm:", sm)
 
 sb=find_sb(x,y)
 print("sb:", sb)
+
+print("chi:",find_chi(x,y,m,b))
+
+for i in range(4):
+    print("Rv:",find_Rv(x[i],y[i],z[i]))
+
+
 

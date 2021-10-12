@@ -31,7 +31,7 @@ def find_b(x,y):
     b=(sum(y)-m*sum(x))/N
     return b
 
-def find_variance(x,y):
+def find_variance(x,y,m,b):
     v = ( sq(y[0]-(b+m*x[0])) + sq(y[1]-(b+m*x[1])) + sq(y[2]-(b+m*x[2])) + sq(y[3]-(b+m*x[3])) ) / (N-2)
     return v
 
@@ -59,13 +59,13 @@ print("op1")
 delta=find_delta(x,y) # N*sum of sq - sq of sum
 print("delta:",delta)
 
-m=find_m(x,y)
-print("m:",m)
+m1=find_m(x,y)
+print("m:",m1)
 
 b=find_b(x,y)
 print("b:",b)
 
-v=find_variance(x,y)
+v=find_variance(x,y,m1,b)
 print("variance:",v)
 
 sm=find_sm(x,y)
@@ -75,6 +75,18 @@ sb=find_sb(x,y)
 print("sb:", sb)
 
 print("chi:",find_chi(x,y,m,b))
+
+def find_RSQ(x,y,m,b):
+    deno=0
+    avgV = find_avg(y[0],y[1],y[2],y[3])
+    for i in range(4):
+        diff=sq(y[i]-avgV)
+        deno+=diff
+    variance = find_variance(x,y,m,b)
+    return 1-((N-2)*variance)/deno
+
+RSQ=find_RSQ(x,y,m1,b)
+print("RSQ",RSQ)
 
 x=[0.013946,
 0.002414,
@@ -100,13 +112,13 @@ print("\nop2")
 delta=find_delta(x,y) # N*sum of sq - sq of sum
 print("delta:",delta)
 
-m=find_m(x,y)
-print("m:",m)
+m2=find_m(x,y)
+print("m:",m2)
 
 b=find_b(x,y)
 print("b:",b)
 
-variance=find_variance(x,y)
+variance=find_variance(x,y,m2,b)
 print("variance:",v)
 
 sm=find_sm(x,y)
@@ -117,8 +129,35 @@ print("sb:", sb)
 
 print("chi:",find_chi(x,y,m,b))
 
+RSQ=find_RSQ(x,y,m2,b)
+print("RSQ",RSQ)
+
+R_v=[]
 for i in range(4):
     print("Rv:",find_Rv(x[i],y[i],z[i]))
+    R_v.append(find_Rv(x[i],y[i],z[i]))
+R_a=[-3.371,
+1.751387181,
+1.650,
+2.041
+
+]
+
+def find_avg(a,b,c,d):
+    return (a+b+c+d)/4
+Rv=find_avg(R_v[0],R_v[1],R_v[2],R_v[3])
+Ra=find_avg(R_a[0],R_a[1],R_a[2],R_a[3])
+print("Rv avg:",Rv)
+print("Ra avg:",Ra)
+
+R1=(-Rv*m1)/(Rv+m1)
+print("R1:",R1)
+R2 = -Ra-m2
+print("R2:",R2)
+
+
+
+
 
 
 
